@@ -1,0 +1,20 @@
+{
+  "name": "USA 2 Georgia Calculator",
+  "version": "0.1.0",
+  "description": "Calculates shipping cost for USA 2 Georgia",
+  "icons": { "128": "icon.png" },
+  "background": { "scripts": ["background.js"] },
+  "content_scripts": [
+    { "matches": ["http://*/*"], "js": ["u2g_content_script.js"] }
+  ],
+  "permissions": [
+    "tabs"
+  ],
+  "page_action": {
+      "default_name": "Shipping Weight",
+      "default_icon": "marker.png",
+      "default_popup": "popup.html"
+  },
+  "manifest_version": 2,
+  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src https://maps.googleapis.com; img-src https://maps.google.com"
+}
