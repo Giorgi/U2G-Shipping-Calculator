@@ -11,8 +11,11 @@
     "tabs"
   ],
   "page_action": {
+      "default_icon": {
+            "19": "dollar19.png",
+            "38": "dollar.png"
+          },
       "default_name": "Shipping Weight",
-      "default_icon": "marker.png",
       "default_popup": "popup.html"
   },
   "manifest_version": 2,
