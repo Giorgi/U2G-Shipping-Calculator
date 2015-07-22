@@ -3,7 +3,7 @@ var selectedPrice = null;
 var selectedId = null;
 
 function updatePrice(tabId) {
-  chrome.tabs.sendRequest(tabId, {}, function (price) {
+  chrome.tabs.sendMessage(tabId, {}, function (price) {
     prices[tabId] = price;
     if (!price) {
       chrome.pageAction.hide(tabId);
@@ -28,9 +28,9 @@ chrome.tabs.onUpdated.addListener(function (tabId, change, tab) {
   }
 });
 
-chrome.tabs.onSelectionChanged.addListener(function (tabId, info) {
-  selectedId = tabId;
-  updateSelected(tabId);
+chrome.tabs.onActivated.addListener(function (activeInfo) {
+  selectedId = activeInfo.tabId;
+  updateSelected(activeInfo.tabId);
 });
 
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
