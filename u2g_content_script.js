@@ -1,4 +1,3 @@
-// The background page is asking us to find an address on the page.
 if (window == top) {
   chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
     sendResponse(findWeight());
@@ -56,7 +55,7 @@ var findWeight = function () {
       console.log("found: " + match[0]);
 
       shippingWeight = {
-        weightType: "shipping",
+        weightType: 0,
         weight: Number(match[1]),
         unit: match[2].toLowerCase().replace(/s+$/g, ''),
       };
@@ -74,7 +73,7 @@ var findWeight = function () {
       console.log("found: " + match[0]);
 
       dimensionWeight = {
-        weightType: "dimension",
+        weightType: 1,
         weight: Number(match[1]) * Number(match[2]) * Number(match[3]) / 166,
       };
 
@@ -86,8 +85,8 @@ var findWeight = function () {
   }
 
   var result = {
-    shippingWeight,
-    dimensionWeight
+    shipping: shippingWeight,
+    dimension: dimensionWeight
   };
 
   if (shippingWeight && dimensionWeight) {
@@ -111,7 +110,7 @@ var findWeight = function () {
 
 function buildWeightInfo(target, source) {
   target.weightType = source.weightType;
-  target.weight = source.weight;
+  target.metricWeight = source.metricWeight;
   target.price = source.price;
   target.formattedPrice = "USA2Georgia Shipping Price: " + target.price.toFixed(2) + " USD";
 }
