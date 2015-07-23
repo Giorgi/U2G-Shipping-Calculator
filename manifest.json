@@ -5,7 +5,7 @@
   "icons": { "128": "icon.png" },
   "background": { "scripts": ["background.js"] },
   "content_scripts": [
-    { "matches": ["http://*/*"], "js": ["u2g_content_script.js"] }
+    { "matches": ["*://*.amazon.com/*"], "js": ["u2g_content_script.js"] }
   ],
   "permissions": [
     "tabs"
