@@ -1,17 +1,27 @@
 body {
   width: 350px;
-  height: 300px;
+  height: 250px;
 }
 
 p {
   margin: 5px;
+  text-align: center;
 }
 
 #summary{
   font-size: 24px;
-  text-align: center;
 }
 
 #shippingPrice{
   font-weight: bold;
+}
+
+#otherWeight{
+  font-size: 18px;
+  position: absolute;
+  bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
 }
