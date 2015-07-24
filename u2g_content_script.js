@@ -52,8 +52,6 @@ var findWeight = function () {
   if (foundWeightNode) {
     var match = shippingWeightRegex.exec(foundWeightNode.textContent);
     if (match && match.length) {
-      console.log("found: " + match[0]);
-
       shippingWeight = {
         weightType: 0,
         weight: Number(match[1]),
@@ -70,7 +68,6 @@ var findWeight = function () {
   if (foundDimensionsNode) {
     var match = dimensionsRegex.exec(foundDimensionsNode.textContent);
     if (match && match.length) {
-      console.log("found: " + match[0]);
 
       dimensionWeight = {
         weightType: 1,
