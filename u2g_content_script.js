@@ -14,6 +14,8 @@ var findWeight = function () {
   var foundDimensionsNode;
   var shippingWeightRegex = /shipping weight: ([0-9.]+) ([a-z]+)/i;
   var dimensionsRegex = /product dimensions:[ \s]*([0-9.]+)[ x]+([0-9.]+)[ x]+([0-9.]+) ([a-z]+)/im;
+  var shippingWeightRegex2 = /shipping weight([0-9.]+) ([a-z]+)/i;
+  var dimensionsRegex2 = /product dimensions[ \s]*([0-9.]+)[ x]+([0-9.]+)[ x]+([0-9.]+) ([a-z]+)/im;
   var node = document.body;
   var done = false;
 
@@ -52,14 +54,7 @@ var findWeight = function () {
   if (foundWeightNode) {
     var match = shippingWeightRegex.exec(foundWeightNode.textContent);
     if (match && match.length) {
-      shippingWeight = {
-        weightType: 0,
-        weight: Number(match[1]),
-        unit: match[2].toLowerCase().replace(/s+$/g, ''),
-      };
-
-      shippingWeight.metricWeight = shippingWeight.weight * Weights[shippingWeight.unit];
-      shippingWeight.price = shippingWeight.metricWeight * 8
+      shippingWeight = extractShippingWeight(match);
     } else {
       console.log("bad initial match: " + foundWeightNode.textContent);
     }
@@ -68,16 +63,35 @@ var findWeight = function () {
   if (foundDimensionsNode) {
     var match = dimensionsRegex.exec(foundDimensionsNode.textContent);
     if (match && match.length) {
-
-      dimensionWeight = {
-        weightType: 1,
-        weight: Number(match[1]) * Number(match[2]) * Number(match[3]) / 166,
-      };
-
-      dimensionWeight.metricWeight = dimensionWeight.weight * Weights["pound"];
-      dimensionWeight.price = dimensionWeight.metricWeight * 8
+      dimensionWeight = extractDimensionWeight(match);
     } else {
       console.log("bad initial match: " + foundDimensionsNode.textContent);
+    }
+  }
+
+  if (!foundDimensionsNode && !foundWeightNode) {
+    var elements = document.getElementsByClassName('size-weight');
+
+    for (var i = 0; i < elements.length; i++) {
+      var text = elements[i].textContent;
+      var match = dimensionsRegex2.exec(text);
+
+      if (match && match.length) {
+        dimensionWeight = extractDimensionWeight(match);
+        break;
+      }
+    }
+
+    elements = document.getElementsByClassName('shipping-weight');
+
+    for (var i = 0; i < elements.length; i++) {
+      var text = elements[i].textContent;
+      var match = shippingWeightRegex2.exec(text);
+
+      if (match && match.length) {
+        shippingWeight = extractShippingWeight(match);
+        break;
+      }
     }
   }
 
@@ -110,4 +124,29 @@ function buildWeightInfo(target, source) {
   target.metricWeight = source.metricWeight;
   target.price = source.price;
   target.formattedPrice = "USA2Georgia Shipping Price: " + target.price.toFixed(2) + " USD";
+}
+
+function extractDimensionWeight(match) {
+  var dimensionWeight = {
+    weightType: 1,
+    weight: Number(match[1]) * Number(match[2]) * Number(match[3]) / 166,
+  };
+
+  dimensionWeight.metricWeight = dimensionWeight.weight * Weights["pound"];
+  dimensionWeight.price = dimensionWeight.metricWeight * 8;
+
+  return dimensionWeight;
+}
+
+function extractShippingWeight(match) {
+  var shippingWeight = {
+    weightType: 0,
+    weight: Number(match[1]),
+    unit: match[2].toLowerCase().replace(/s+$/g, ''),
+  };
+
+  shippingWeight.metricWeight = shippingWeight.weight * Weights[shippingWeight.unit];
+  shippingWeight.price = shippingWeight.metricWeight * 8;
+
+  return shippingWeight;
 }
