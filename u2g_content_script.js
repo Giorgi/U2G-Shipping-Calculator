@@ -74,20 +74,18 @@ var findWeight = function () {
 
     for (var i = 0; i < elements.length; i++) {
       var text = elements[i].textContent;
-      var match = dimensionsRegex2.exec(text);
+      var dimensionsMatch = dimensionsRegex2.exec(text);
+      var shippingWeightMatch = shippingWeightRegex2.exec(text);
 
-      if (match && match.length) {
-        dimensionWeight = extractDimensionWeight(match);
-        break;
+      if (!dimensionWeight && dimensionsMatch && dimensionsMatch.length) {
+	      dimensionWeight = extractDimensionWeight(dimensionsMatch);
       }
-    }
 
-    for (var i = 0; i < elements.length; i++) {
-      var text = elements[i].textContent;
-      var match = shippingWeightRegex2.exec(text);
+      if (!shippingWeight && dimensionsMatch && dimensionsMatch.length) {
+	      shippingWeight = extractShippingWeight(shippingWeightMatch);
+      }
 
-      if (match && match.length) {
-        shippingWeight = extractShippingWeight(match);
+      if (dimensionWeight && shippingWeight) {
         break;
       }
     }
