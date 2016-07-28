@@ -1,6 +1,6 @@
 {
   "name": "USA 2 Georgia Calculator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Calculates shipping cost for USA 2 Georgia",
   "icons": { "16": "icon16.png",
              "48": "icon48.png",
