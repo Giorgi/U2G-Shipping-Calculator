@@ -14,7 +14,7 @@ var findWeight = function () {
   var foundDimensionsNode;
   var shippingWeightRegex = /shipping weight: ([0-9.]+) ([a-z]+)/i;
   var dimensionsRegex = /product dimensions:[ \s]*([0-9.]+)[ x]+([0-9.]+)[ x]+([0-9.]+) ([a-z]+)/im;
-  var shippingWeightRegex2 = /shipping weight([0-9.]+) ([a-z]+)/i;
+  var shippingWeightRegex2 = /shipping weight[ \s]*([0-9.]+) ([a-z]+)/i;
   var dimensionsRegex2 = /product dimensions[ \s]*([0-9.]+)[ x]+([0-9.]+)[ x]+([0-9.]+) ([a-z]+)/im;
   var node = document.body;
   var done = false;
@@ -70,7 +70,7 @@ var findWeight = function () {
   }
 
   if (!foundDimensionsNode && !foundWeightNode) {
-    var elements = document.getElementsByClassName('size-weight');
+    var elements = document.getElementsByClassName('prodDetTable');
 
     for (var i = 0; i < elements.length; i++) {
       var text = elements[i].textContent;
@@ -81,8 +81,6 @@ var findWeight = function () {
         break;
       }
     }
-
-    elements = document.getElementsByClassName('shipping-weight');
 
     for (var i = 0; i < elements.length; i++) {
       var text = elements[i].textContent;
